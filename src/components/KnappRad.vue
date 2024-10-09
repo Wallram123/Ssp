@@ -44,6 +44,11 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
+.resultat {
+  font-size: 1.2em;
+  text-align: center;
+  margin: 1.2em 0;
+}
 .knapprad {
   display: flex;
   justify-content: center;

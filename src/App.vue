@@ -1,36 +1,17 @@
 <script setup>
 import { ref } from 'vue'
 import KnappRad from './components/KnappRad.vue'
+import ResultatRad from './components/ResultatRad.vue'
 
 const score = ref({ spelare: 0, dator: 0 })
 const resultat = ref('Lets Begin!')
 const knappar = ref(['Sten', 'Sax', 'Påse', 'Lizard', 'Spock'])
 
-function hittaVinnare() {
-  let buttons = document.getElementsByClassName('alternativ')
-  for (let b of buttons) {
-    if (b.classList.contains('spelarval')) {
-      var spelarval = b.textContent
-    }
-    if (b.classList.contains('datorval')) {
-      var datorval = b.textContent
-    }
-  }
-  if (spelarval == datorval) {
-    resultat.value = 'Oavgjort!'
-  } else if (
-    (spelarval == 'Sten' && datorval == 'Sax') ||
-    (spelarval == 'Sax' && datorval == 'Påse') ||
-    (spelarval == 'Påse' && datorval == 'Sten')
-  ) {
-    resultat.value = 'Du vann!'
-    score.value.spelare++
-  } else {
-    resultat.value = 'Du förlorade!'
-    score.value.dator++
-  }
+function hittaVinnare(valdaKnappar) {
+  let spelare = knappar.value.indexOf(valdaKnappar.spelare)
+  let dator = knappar.value.indexOf(valdaKnappar.dator)
+  resultat.value = { spelare: spelare, dator: dator }
 }
-
 function reset() {
   score.value.spelare = 0
   score.value.dator = 0
@@ -50,9 +31,7 @@ function reset() {
 
   <main>
     <KnappRad :knappar="knappar" @valdaKnappar="hittaVinnare" />
-    <div class="resultat">
-      <p id="resultat">{{ resultat }}</p>
-    </div>
+    <ResultatRad :valda-knappar="resultat" />
     <div class="Score">
       <button id="nolla" @click="reset">Nollställ poängen</button>
       <p>
@@ -69,11 +48,6 @@ header {
   margin-bottom: 1.2em;
 }
 
-.resultat {
-  font-size: 1.2em;
-  text-align: center;
-  margin: 1.2em 0;
-}
 .Score {
   font-size: 1.2em;
   text-align: center;
@@ -102,5 +76,10 @@ button.spelarval {
 }
 button.datorval {
   border: red solid 2px;
+}
+.resultat {
+  font-size: 1.2em;
+  text-align: center;
+  margin: 1.2em 0;
 }
 </style>
